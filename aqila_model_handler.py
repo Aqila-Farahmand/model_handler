@@ -3,12 +3,9 @@ import numpy as np
 from abc import ABC, abstractmethod
 from typing import List, Optional
 
+
 class ModelHandler(ABC):
-    def __init__(
-        self,
-        dataset: Dict[str, np.ndarray],
-        model: Any,
-        ):
+    def __init__(self, dataset: Dict[str, np.ndarray], model: Any, ):
         super(ModelHandler, self).__init__()
         """
         Initialize ModelHandler with pre-loaded dataset and model.
@@ -37,7 +34,6 @@ class ModelHandler(ABC):
         # Calculate classification results
         self.train_correct_mask = self._get_correct_predictions_mask(self.y_train, self.y_train_pred)
         self.test_correct_mask = self._get_correct_predictions_mask(self.y_test, self.y_test_pred)
-        
 
     @abstractmethod
     def _get_predictions(self, x: np.ndarray) -> np.ndarray:
