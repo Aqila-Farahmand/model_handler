@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-import torch
 import numpy as np
 from transformers import DistilBertForSequenceClassification, DistilBertTokenizer
 from typing import Dict, List, Any

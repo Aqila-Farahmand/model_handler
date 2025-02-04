@@ -1,11 +1,13 @@
+import torch
+from typing import Dict, List, Any
 from ModelHandler import ModelHandler
+from transformers import DistilBertForSequenceClassification, DistilBertTokenizer
 
 
 class DistilBertModelHandler(ModelHandler):
     def load_model(self, model_path: str) -> Any:
         """Load the fine-tuned DistilBERT model."""
-        model = DistilBertForSequenceClassification.from_pretrained(
-            "distilbert-base-uncased", num_labels=2
+        model = DistilBertForSequenceClassification.from_pretrained("distilbert-base-uncased", num_labels=2
         )
         model.load_state_dict(torch.load(model_path, map_location="cpu"))
         model.eval()
