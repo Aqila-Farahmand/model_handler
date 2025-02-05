@@ -72,6 +72,7 @@ class DistilBertModelHandler(ModelHandler):
 
         Returns:
             Boolean mask indicating correct predictions.
+            the return value is a boolean array with the same length as input array
         """
         return (y_true == y_pred)
 
