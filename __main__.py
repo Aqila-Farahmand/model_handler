@@ -24,10 +24,10 @@ test_dataset = {
     "y_test": [0, 1, 0, 0, 1]
 }
 
-
+# to do : create a separate model loader
 model_path = "model/distilbert-fake-news.pth"
 
-# Load the model handler to analyze selected layers (0, 3, and 5)
+# Load the model handler to analyze selected layers (0, 3, and 5), you may select all or output
 model_handler = DistilBertModelHandler(test_dataset, model_path, selected_layers=[0, 3, 5])
 
 test_accuracy = model_handler.get_accuracy()

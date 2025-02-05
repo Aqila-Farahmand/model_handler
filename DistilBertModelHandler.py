@@ -55,6 +55,7 @@ class DistilBertModelHandler(ModelHandler):
         inputs = self.tokenizer(texts, padding=True, truncation=True, return_tensors="pt", max_length=512)
         inputs = {key: value.to(self.device) for key, value in inputs.items()}
 
+
         # Predict
         with torch.no_grad():
             logits = self.model(**inputs).logits
@@ -76,6 +77,8 @@ class DistilBertModelHandler(ModelHandler):
         """
         return (y_true == y_pred)
 
+
+    # To Do: get_activation() return type is dict [key: layer_name, value: list of ]
     def _get_activations(self, text: str) -> List[np.ndarray]:
         """
         Compute activations for selected layers of the model.
@@ -116,6 +119,8 @@ class DistilBertModelHandler(ModelHandler):
             hook.remove()
 
         return activations
+
+    # Get the values from the neural nodes BEFORE activation is done.
 
     def _get_pre_activations(self, text: str) -> List[np.ndarray]:
         """
