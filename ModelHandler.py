@@ -19,7 +19,7 @@ class ModelHandler(ABC):
         self.x_test = dataset["x_test"]
         self.y_test = np.array(dataset["y_test"])
 
-        self.selected_layers = selected_layers if selected_layers else [0, 2, 4]  # Default layers
+        self.selected_layers = selected_layers if selected_layers else [0, 3, 5]  # Default layers
 
         # Load model
         self.tokenizer = DistilBertTokenizer.from_pretrained("distilbert-base-uncased")
@@ -43,7 +43,7 @@ class ModelHandler(ABC):
 
     @abstractmethod
     def _get_correct_predictions_mask(self, y_true: np.ndarray, y_pred: np.ndarray) -> np.ndarray:
-        """Create a boolean mask for correct predictions."""
+        """Create a boolean(i.e 0,1) mask for correct predictions."""
         pass
 
     @abstractmethod
@@ -63,7 +63,7 @@ class ModelHandler(ABC):
         pass
 
     def get_accuracy(self) -> float:
-        """Compute accuracy based on test data."""
+        """Compute accuracy based on input data."""
         correct_predictions = np.sum(self.test_correct_mask)
         total_predictions = len(self.y_test)
         return correct_predictions / total_predictions if total_predictions > 0 else 0.0
