@@ -1,4 +1,6 @@
 from DistilBertModelHandler import DistilBertModelHandler
+import torch
+from transformers import DistilBertForSequenceClassification
 
 test_dataset = {
     "x_train": [
@@ -24,27 +26,37 @@ test_dataset = {
     "y_test": [0, 1, 0, 0, 1]
 }
 
-# to do : create a separate model loader
-model_path = "model/distilbert-fake-news.pth"
 
-# Load the model handler to analyze selected layers (0, 3, and 5), you may select all or output
-model_handler = DistilBertModelHandler(test_dataset, model_path, selected_layers=[0, 3, 5])
+# Load a fine-tuned model
+model_path = "path/to/your/fine_tuned_model.pth"
+model = DistilBertForSequenceClassification.from_pretrained("distilbert-base-uncased")
+model.load_state_dict(torch.load(model_path, map_location=torch.device("cuda" if torch.cuda.is_available() else "cpu")))
+model.eval()
 
-test_accuracy = model_handler.get_accuracy()
-print(f"Test Accuracy: {test_accuracy * 100:.2f}%")
+# Initialize the handler
+selected_layers = [0, 3, 5]
+model_handler = DistilBertModelHandler(model, selected_layers, use_pre_activation_values, use_onehot_encoder)
 
-# sample text for calculating the activations and pre-activations
-sample_text = "Breaking news: Something important happened!"
+# Sample texts
+texts = ["This is a great product!", "I am disappointed with the service."]
+true_labels = np.array([1, 0])  # Assume 1 = positive, 0 = negative
 
-# calculate activations and pre-activations
-try:
-    activations = model_handler._get_activations(sample_text)
-    pre_activations = model_handler._get_pre_activations(sample_text)
+# Predictions
+predictions = model_handler._get_predictions(texts)
+print("Predictions:", predictions)
 
-    print(f"Number of selected layers: {len(activations)}")
-    for i, (act, pre_act) in enumerate(zip(activations, pre_activations)):
-        print(f"\nLayer {i}:")
-        print(f"  - Activation shape: {act.shape}")
-        print(f"  - Pre-activation shape: {pre_act.shape}")
-except Exception as e:
-    print(f"Error while extracting activations and pre-activations: {e}")
+# Accuracy Mask
+correct_mask = model_handler._get_correct_predictions_mask(true_labels, predictions)
+print("Correct Predictions:", correct_mask)
+
+# Layer Activations
+activations = model_handler._get_activations("I love this movie!")
+print("Activation Layer Names:", activations.keys())
+
+# Pre-Activations
+pre_activations = model_handler._get_pre_activations("I love this movie!")
+print("Pre-Activation Layer Names:", pre_activations.keys())
+
+# Model Layer Shapes
+print("Model Layer Shapes:", model_handler.model_shape)
+
