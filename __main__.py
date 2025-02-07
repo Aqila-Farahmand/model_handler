@@ -35,7 +35,7 @@ model.eval()
 
 # Initialize the handler
 selected_layers = [0, 3, 5]
-model_handler = DistilBertModelHandler(model, selected_layers, use_pre_activation_values, use_onehot_encoder)
+model_handler = DistilBertModelHandler(selected_layers, False, True, model)
 
 # Sample texts
 texts = ["This is a great product!", "I am disappointed with the service."]

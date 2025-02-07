@@ -1,11 +1,11 @@
-from model_handler import ModelHandler
+from modelHandler import ModelHandler
 import numpy as np
 import torch
 from typing import Dict, List, Any
 
 
 class DistilBertModelHandler(ModelHandler):
-    def __init__(self, model: any, selected_layers: List[int] = None):
+    def __init__(self, selected_layers: str, use_pre_activation_values: bool, use_onehot_encoder: bool, model: Any ):
         """
         DistilBERT Model Handler for Sequence Classification.
 
